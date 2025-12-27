@@ -1,0 +1,22 @@
+name: Auto merge Exercism PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+
+    # Solo mergear PRs creados por el syncer de Exercism
+    if: github.actor == 'exercism-solutions-syncer'
+
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          merge-method: squash
