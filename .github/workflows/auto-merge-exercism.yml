@@ -12,11 +12,15 @@ jobs:
   automerge:
     runs-on: ubuntu-latest
 
-    # Solo mergear PRs creados por el syncer de Exercism
+    # Solo PRs creados por Exercism
     if: github.actor == 'exercism-solutions-syncer'
 
     steps:
-      - uses: fastify/github-action-merge-dependabot@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          merge-method: squash
+      - name: Auto merge
+        uses: pascalgn/automerge-action@v0.16.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MERGE_METHOD: squash
+          MERGE_LABELS: ""          # sin labels obligatorias
+          MERGE_RETRIES: "10"
+          MERGE_RETRY_SLEEP: "10000"
